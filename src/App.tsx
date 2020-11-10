@@ -1,7 +1,8 @@
-import React, { Suspense } from 'react'
+import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import './App.css'
-import LoginPage from './pages/LoginPage'
+
+const LoginPage = lazy(() => import('./pages/LoginPage'))
 
 function App(): JSX.Element {
   const user = null
