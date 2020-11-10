@@ -1,15 +1,21 @@
 import React, { Suspense } from 'react'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 import './App.css'
-import PageWrapper from './components/layout/PageWrapper'
 import LoginPage from './pages/LoginPage'
 
 function App(): JSX.Element {
+  const user = null
   return (
-    <PageWrapper>
+    <BrowserRouter>
       <Suspense fallback="loading">
-        <LoginPage />
+        <Switch>
+          <Route exact from="/">
+            {!user && <Redirect to="/login" />}
+          </Route>
+          <Route exact path="/login" render={() => <LoginPage />} />
+        </Switch>
       </Suspense>
-    </PageWrapper>
+    </BrowserRouter>
   )
 }
 

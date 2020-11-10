@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import PageWrapper from '../../components/layout/PageWrapper'
 
 const Root = styled.div`
   margin-top: 128px;
@@ -19,14 +20,16 @@ const LoginPage: React.FC<unknown> = () => {
   const { t } = useTranslation()
 
   return (
-    <Root>
-      <h1>{t('Login')}</h1>
-      <Form>
-        <input placeholder="Username" />
-        <input placeholder="Password" />
-        <button type="submit">Login</button>
-      </Form>
-    </Root>
+    <PageWrapper>
+      <Root>
+        <h1>{t('Login')}</h1>
+        <Form>
+          <input placeholder="Username" />
+          <input placeholder="Password" />
+          <button type="submit">Login</button>
+        </Form>
+      </Root>
+    </PageWrapper>
   )
 }
 
