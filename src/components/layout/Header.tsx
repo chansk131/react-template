@@ -1,3 +1,4 @@
+import { Button } from 'antd'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -21,6 +22,9 @@ const HeaderContent = styled.div`
   font-size: 20px;
   justify-content: space-between;
 `
+const LanguageButton = styled(Button)`
+  padding: 4px 6px;
+`
 const Header: React.FC = () => {
   const { i18n } = useTranslation()
   const handleChangeLanguage = (language: string): void => {
@@ -32,12 +36,18 @@ const Header: React.FC = () => {
       <HeaderContent>
         <div>Header</div>
         <div>
-          <button type="button" onClick={() => handleChangeLanguage('th')}>
+          <LanguageButton
+            type={i18n.language === 'th' ? 'link' : 'text'}
+            onClick={() => handleChangeLanguage('th')}
+          >
             TH
-          </button>
-          <button type="button" onClick={() => handleChangeLanguage('en')}>
+          </LanguageButton>
+          <LanguageButton
+            type={i18n.language === 'en' ? 'link' : 'text'}
+            onClick={() => handleChangeLanguage('en')}
+          >
             EN
-          </button>
+          </LanguageButton>
         </div>
       </HeaderContent>
     </StyledHeader>
