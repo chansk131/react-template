@@ -1,11 +1,11 @@
-import React, { lazy, Suspense } from 'react'
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
-import './App.css'
+import React, { lazy, Suspense } from "react";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import "./App.css";
 
-const LoginPage = lazy(() => import('./pages/LoginPage'))
+const LoginPage = lazy(() => import("./pages/LoginPage"));
 
 function App(): JSX.Element {
-  const user = null
+  const user = null;
   return (
     <BrowserRouter>
       <Suspense fallback="loading">
@@ -17,7 +17,7 @@ function App(): JSX.Element {
         </Switch>
       </Suspense>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

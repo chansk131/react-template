@@ -1,5 +1,9 @@
 /** @format */
 
 module.exports = {
-  extends: ['airbnb-typescript-prettier'],
+  env: {
+    browser: true,
+    jest: true,
+  },
+  extends: ["airbnb-typescript-prettier", "react-app"],
 };

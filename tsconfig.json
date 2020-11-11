@@ -22,7 +22,6 @@
   },
   "include": [
     "src",
-    ".eslintrc.js",
-    ".prettierrc.js"
+    ".eslintrc.js"
   ]
 }
