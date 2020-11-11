@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Alert as AntdAlert } from "antd";
 import { useRecoilState } from "recoil";
@@ -14,22 +14,34 @@ const StyledAlert = styled(AntdAlert)`
   }
 `;
 
+const AUTO_HIDE_TIME = 2000;
 const Alert: React.FC = () => {
+  const timerAutoHide = useRef(0);
   const [alert, setAlert] = useRecoilState(alertState);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setAlert({
       show: false,
       message: "",
     });
-  };
+  }, [setAlert]);
+
+  useEffect(() => {
+    if (alert.show) {
+      timerAutoHide.current = setTimeout(() => handleClose(), AUTO_HIDE_TIME);
+    }
+
+    return () => {
+      clearTimeout(timerAutoHide.current);
+    };
+  }, [alert.show, handleClose]);
 
   if (!alert.show) return null;
 
   return (
     <StyledAlert
       message={alert.message}
-      type="error"
+      type={alert.type}
       showIcon
       closable
       onClose={handleClose}
