@@ -1,6 +1,6 @@
 /** @format */
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   useRecoilState,
   atom,
@@ -8,12 +8,8 @@ import {
   useSetRecoilState,
 } from "recoil";
 import alertState from "../components/Alert/alertState";
-import axios from "./axios";
-
-export interface IUser {
-  username: string;
-  password?: string;
-}
+import axios, { setAxiosHeaderAuthorization } from "./axios";
+import { IUser } from "./user.types";
 
 const userState = atom<IUser | null>({
   key: "user",
@@ -35,28 +31,32 @@ function useAuth(): IUseAuth {
   const setAlertState = useSetRecoilState(alertState);
   const [isChecking, setIsChecking] = useState(false);
 
-  const login = async ({ username, password }: IUser): Promise<void> => {
-    try {
-      const resp = await axios.post("/login", { username, password });
-      setUser({ username: resp.data.username });
-    } catch (e) {
-      setAlertState({ message: `Login: ${e.message}`, type: "error" });
-    }
-  };
+  const login = useCallback(
+    async ({ username, password }: IUser): Promise<void> => {
+      try {
+        await axios.post("/login", { username, password });
+      } catch (e) {
+        setAlertState({ message: `Login: ${e.message}`, type: "error" });
+      }
+    },
+    [setAlertState]
+  );
 
-  const logout = async (): Promise<void> => {
+  const logout = useCallback(async (): Promise<void> => {
     try {
       await axios.get("/logout");
+      setAxiosHeaderAuthorization();
       setUser(null);
     } catch (e) {
       setAlertState({ message: `Logout: ${e.message}`, type: "error" });
     }
-  };
+  }, [setAlertState, setUser]);
 
-  const refresh = async (): Promise<void> => {
+  const refresh = useCallback(async (): Promise<void> => {
     setIsChecking(true);
     try {
-      await axios.get("refresh");
+      const resp = await axios.get("refresh", { withCredentials: true });
+      setAxiosHeaderAuthorization(resp.data.accessToken);
     } catch (e) {
       if (e?.response?.status !== 401) {
         setAlertState({ message: `Refresh: ${e.message}`, type: "error" });
@@ -64,7 +64,7 @@ function useAuth(): IUseAuth {
     } finally {
       setIsChecking(false);
     }
-  };
+  }, [setAlertState]);
 
   return {
     user,
@@ -73,6 +73,7 @@ function useAuth(): IUseAuth {
     login,
     logout,
     refresh,
+    // isAuthenticated: true,
     isAuthenticated: user ?? isChecking,
   };
 }

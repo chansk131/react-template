@@ -3,20 +3,29 @@ import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
+import { SWRConfig } from "swr";
 import App from "./App";
 import "./i18n";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import theme from "./theme/theme";
+import axios from "./services/axios";
+
+const swrConfig = {
+  fetcher: (url: string) => axios.get(url).then((res) => res.data),
+  shouldRetryOnError: false,
+};
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <RecoilRoot>
-        <ThemeProvider theme={theme}>
-          <App />
-        </ThemeProvider>
-      </RecoilRoot>
+      <SWRConfig value={swrConfig}>
+        <RecoilRoot>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </RecoilRoot>
+      </SWRConfig>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
