@@ -1,33 +1,42 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
-import Header from "./Header";
+import Layout, { Content } from "antd/lib/layout/layout";
 import Alert from "../Alert";
+import Header from "./Header";
+import Sider from "./Sider";
 // import Footer from './Footer'
 
-type PageWrapperProp = {
-  children: React.ReactNode;
-};
-
-const Main = styled.main`
+const StyledLayout = styled(Layout)`
+  height: 100vh;
   margin-top: 56px;
 `;
 
-const PageWrapper: React.FC<PageWrapperProp> = ({ children }) => {
-  return (
-    <>
-      <Header />
-      <Main>
-        {children}
-        <Alert />
-      </Main>
-      {/* <Footer /> */}
-    </>
-  );
+type PageWrapperProp = {
+  hasSider?: boolean;
 };
 
-PageWrapper.propTypes = {
-  children: PropTypes.node.isRequired,
+const PageWrapper: React.FC<PageWrapperProp> = ({ children, hasSider }) => {
+  return (
+    <StyledLayout>
+      <Header />
+      <Layout>
+        {hasSider && <Sider />}
+        <Layout style={{ padding: "0 24px 24px" }}>
+          <Content
+            className="site-layout-background"
+            style={{
+              padding: 24,
+              margin: 0,
+              minHeight: 280,
+            }}
+          >
+            {children}
+            <Alert />
+          </Content>
+        </Layout>
+      </Layout>
+    </StyledLayout>
+  );
 };
 
 export default PageWrapper;

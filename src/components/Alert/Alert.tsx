@@ -21,22 +21,21 @@ const Alert: React.FC = () => {
 
   const handleClose = useCallback(() => {
     setAlert({
-      show: false,
       message: "",
     });
   }, [setAlert]);
 
   useEffect(() => {
-    if (alert.show) {
+    if (alert.message) {
       timerAutoHide.current = setTimeout(() => handleClose(), AUTO_HIDE_TIME);
     }
 
     return () => {
       clearTimeout(timerAutoHide.current);
     };
-  }, [alert.show, handleClose]);
+  }, [alert.message, handleClose]);
 
-  if (!alert.show) return null;
+  if (!alert.message) return null;
 
   return (
     <StyledAlert

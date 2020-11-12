@@ -3,7 +3,6 @@
 import { atom } from "recoil";
 
 interface IAlert {
-  show: boolean;
   message: string;
   type?: "info" | "success" | "warning" | "error" | undefined;
 }
@@ -11,7 +10,6 @@ interface IAlert {
 const alertState = atom<IAlert>({
   key: "alert",
   default: {
-    show: false,
     message: "",
   },
 });
